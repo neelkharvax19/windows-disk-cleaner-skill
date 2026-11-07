@@ -1,7 +1,7 @@
 [CmdletBinding(SupportsShouldProcess)]
 param(
     [switch]$SafeOnly,
-    [switch]$ExcludeWPS = $true,
+    [switch]$CleanOldWPS,
     [switch]$CleanClaudeVM,
     [switch]$CleanAndroidAVD,
     [switch]$CleanOllamaModels,
@@ -103,8 +103,8 @@ if (-not $SafeOnly) {
         }
     }
 
-    # WPS Office handling
-    if (-not $ExcludeWPS) {
+    # WPS Office handling (Clean older unused versions only)
+    if ($CleanOldWPS) {
         $wpsDir = "$env:LOCALAPPDATA\Kingsoft\WPS Office"
         if (Test-Path $wpsDir) {
             $versions = Get-ChildItem $wpsDir -Directory | Where-Object { $_.Name -match '^\d+\.\d+' } | Sort-Object Name -Descending
@@ -115,8 +115,6 @@ if (-not $SafeOnly) {
                 }
             }
         }
-    } else {
-        Write-Host "[i] WPS Office was excluded and preserved." -ForegroundColor Cyan
     }
 }
 
