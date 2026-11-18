@@ -40,11 +40,14 @@ $safeTargets = @(
     @{ Name = "Puppeteer Binaries Cache"; Path = "$env:USERPROFILE\.cache\puppeteer"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.cache\puppeteer"); Note = "Downloaded headless Chrome binaries" },
     @{ Name = "HuggingFace Model Cache"; Path = "$env:USERPROFILE\.cache\huggingface"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.cache\huggingface"); Note = "Cached AI model weights" },
     @{ Name = "Chroma Vector Cache"; Path = "$env:USERPROFILE\.cache\chroma"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.cache\chroma"); Note = "Vector database cache" },
-    @{ Name = "Gemini/Antigravity Backup"; Path = "$env:USERPROFILE\.gemini\antigravity-backup"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.gemini\antigravity-backup"); Note = "Old IDE backup files" }
+    @{ Name = "Gemini/Antigravity Backup"; Path = "$env:USERPROFILE\.gemini\antigravity-backup"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.gemini\antigravity-backup"); Note = "Old IDE backup files" },
+    @{ Name = "Ollama Update Cache"; Path = "$env:LOCALAPPDATA\Ollama\updates_v2"; Bytes = (Get-FastFolderSize "$env:LOCALAPPDATA\Ollama\updates_v2"); Note = "Stale installer downloads" },
+    @{ Name = "npm Global Cache"; Path = "$env:USERPROFILE\.npm-cache"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.npm-cache"); Note = "Downloaded npm package tarballs" }
 )
 
 # 4. Review / Dev Environments (Category 2)
 $reviewTargets = @(
+    @{ Name = "Chrome On-Device AI Model"; Path = "$env:LOCALAPPDATA\Google\Chrome\User Data\OptGuideOnDeviceModel"; Bytes = (Get-FastFolderSize "$env:LOCALAPPDATA\Google\Chrome\User Data\OptGuideOnDeviceModel"); Note = "Gemini Nano local weights" },
     @{ Name = "Claude VM Bundles"; Path = "$env:LOCALAPPDATA\Claude-3p\vm_bundles"; Bytes = (Get-FastFolderSize "$env:LOCALAPPDATA\Claude-3p\vm_bundles"); Note = "Claude desktop virtual disk (rootfs.vhdx)" },
     @{ Name = "Android Emulator AVDs"; Path = "$env:USERPROFILE\.android\avd"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.android\avd"); Note = "Virtual smartphone system images" },
     @{ Name = "Ollama Local Models"; Path = "$env:USERPROFILE\.ollama\models"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.ollama\models"); Note = "Locally downloaded Ollama LLMs" }

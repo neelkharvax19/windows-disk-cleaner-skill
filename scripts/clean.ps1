@@ -2,6 +2,7 @@
 param(
     [switch]$SafeOnly,
     [switch]$CleanOldWPS,
+    [switch]$CleanChromeAIModel,
     [switch]$CleanClaudeVM,
     [switch]$CleanAndroidAVD,
     [switch]$CleanOllamaModels,
@@ -76,9 +77,18 @@ Remove-PathSafe "$env:USERPROFILE\.gemini\antigravity-backup" "Gemini IDE Backup
 # 6. Crash dumps
 Remove-PathSafe "$env:LOCALAPPDATA\CrashDumps" "Windows Crash Dumps"
 
+# 7. Package and updater caches
+Remove-PathSafe "$env:USERPROFILE\.npm-cache" "Global npm Cache"
+Remove-PathSafe "$env:LOCALAPPDATA\Ollama\updates_v2" "Ollama Stale Updates"
+
 # --- Category 2: Optional Developer Items ---
 if (-not $SafeOnly) {
     Write-Host "`n--- Optional Items (Category 2) ---" -ForegroundColor Green
+
+    # Chrome On-Device AI Model
+    if ($CleanChromeAIModel) {
+        Remove-PathSafe "$env:LOCALAPPDATA\Google\Chrome\User Data\OptGuideOnDeviceModel" "Chrome On-Device AI Model (Gemini Nano)"
+    }
 
     # Claude VM
     if ($CleanClaudeVM) {
