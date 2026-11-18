@@ -46,9 +46,13 @@ $safeTargets = @(
 )
 
 # 4. Review / Dev Environments (Category 2)
+$claude3pPath = "$env:LOCALAPPDATA\Claude-3p"
+$claudeIsJunction = (Test-Path $claude3pPath) -and (((Get-Item $claude3pPath -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0)
+$claudeBytes = if ($claudeIsJunction) { 0 } else { (Get-FastFolderSize "$env:LOCALAPPDATA\Claude-3p\vm_bundles") }
+
 $reviewTargets = @(
     @{ Name = "Chrome On-Device AI Model"; Path = "$env:LOCALAPPDATA\Google\Chrome\User Data\OptGuideOnDeviceModel"; Bytes = (Get-FastFolderSize "$env:LOCALAPPDATA\Google\Chrome\User Data\OptGuideOnDeviceModel"); Note = "Gemini Nano local weights" },
-    @{ Name = "Claude VM Bundles"; Path = "$env:LOCALAPPDATA\Claude-3p\vm_bundles"; Bytes = (Get-FastFolderSize "$env:LOCALAPPDATA\Claude-3p\vm_bundles"); Note = "Claude desktop virtual disk (rootfs.vhdx)" },
+    @{ Name = "Claude VM Bundles"; Path = "$env:LOCALAPPDATA\Claude-3p\vm_bundles"; Bytes = $claudeBytes; Note = if ($claudeIsJunction) { "Redirected to secondary drive (junction active)" } else { "Claude desktop virtual disk (rootfs.vhdx)" } },
     @{ Name = "Android Emulator AVDs"; Path = "$env:USERPROFILE\.android\avd"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.android\avd"); Note = "Virtual smartphone system images" },
     @{ Name = "Ollama Local Models"; Path = "$env:USERPROFILE\.ollama\models"; Bytes = (Get-FastFolderSize "$env:USERPROFILE\.ollama\models"); Note = "Locally downloaded Ollama LLMs" }
 )

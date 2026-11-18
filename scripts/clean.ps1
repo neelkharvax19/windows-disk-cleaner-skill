@@ -92,7 +92,13 @@ if (-not $SafeOnly) {
 
     # Claude VM
     if ($CleanClaudeVM) {
-        Remove-PathSafe "$env:LOCALAPPDATA\Claude-3p\vm_bundles" "Claude VM Bundles (rootfs.vhdx)"
+        $c3p = "$env:LOCALAPPDATA\Claude-3p"
+        $isJunc = (Test-Path $c3p) -and (((Get-Item $c3p -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0)
+        if ($isJunc) {
+            Write-Host "[i] Claude-3p is safely redirected to secondary drive (junction active)." -ForegroundColor Cyan
+        } else {
+            Remove-PathSafe "$env:LOCALAPPDATA\Claude-3p\vm_bundles" "Claude VM Bundles (rootfs.vhdx)"
+        }
     }
 
     # Android AVDs
